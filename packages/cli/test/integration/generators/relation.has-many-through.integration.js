@@ -21,10 +21,22 @@ const REPOSITORY_APP_PATH = 'src/repositories';
 
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
-const sourceFileName = 'doctor.model.ts';
-const throughFileName = 'appointment.model.ts';
+const sourceFileName = [
+  'doctor.model.ts',
+  'doctor-class.model.ts',
+  'doctor-class-type.model.ts',
+];
+const throughFileName = [
+  'appointment.model.ts',
+  'appointment-class.model.ts',
+  'appointment-class-type.model.ts',
+];
 const controllerFileName = 'doctor-patient.controller.ts';
-const repositoryFileName = 'doctor.repository.ts';
+const repositoryFileName = [
+  'doctor.repository.ts',
+  'doctor-class.repository.ts',
+  'doctor-class-type.repository.ts',
+];
 
 describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
@@ -62,12 +74,12 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         const sourceFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          sourceFileName,
+          sourceFileName[i],
         );
         const sourceRepoFilePath = path.join(
           sandbox.path,
           REPOSITORY_APP_PATH,
-          repositoryFileName,
+          repositoryFileName[i],
         );
 
         assert.file(sourceFilePath);
@@ -80,7 +92,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         const throughFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          throughFileName,
+          throughFileName[i],
         );
 
         assert.file(throughFilePath);
@@ -97,7 +109,6 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         destinationModel: 'Patient',
         throughModel: 'Appointment',
         relationName: 'myPatients',
-        registerInclusionResolver: true,
       },
     ];
 
@@ -124,12 +135,12 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         const sourceFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          sourceFileName,
+          sourceFileName[i],
         );
         const sourceRepoFilePath = path.join(
           sandbox.path,
           REPOSITORY_APP_PATH,
-          repositoryFileName,
+          repositoryFileName[i],
         );
 
         assert.file(sourceFilePath);
@@ -148,24 +159,21 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         destinationModel: 'Patient',
         throughModel: 'Appointment',
         sourceKeyOnThrough: 'customKeyFrom',
-        registerInclusionResolver: true,
       },
       {
         relationType: 'hasManyThrough',
-        sourceModel: 'Doctor',
-        destinationModel: 'Patient',
-        throughModel: 'Appointment',
+        sourceModel: 'DoctorClass',
+        destinationModel: 'PatientClass',
+        throughModel: 'AppointmentClass',
         targetKeyOnThrough: 'customKeyTo',
-        registerInclusionResolver: true,
       },
       {
         relationType: 'hasManyThrough',
-        sourceModel: 'Doctor',
-        destinationModel: 'Patient',
-        throughModel: 'Appointment',
+        sourceModel: 'DoctorClassType',
+        destinationModel: 'PatientClassType',
+        throughModel: 'AppointmentClassType',
         sourceKeyOnThrough: 'customKeyFrom',
         targetKeyOnThrough: 'customKeyTo',
-        registerInclusionResolver: true,
       },
     ];
 
@@ -192,13 +200,13 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         const sourceFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          sourceFileName,
+          sourceFileName[i],
         );
 
         const throughFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          throughFileName,
+          throughFileName[i],
         );
         assert.file(sourceFilePath);
         assert.file(throughFilePath);
@@ -208,7 +216,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
     }
   });
 
-  context('checks if the controller file created ', () => {
+  context('checks if the controller file is created ', () => {
     const promptArray = [
       {
         relationType: 'hasManyThrough',
@@ -253,6 +261,69 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         assert.file(filePath);
         expectFileToMatchSnapshot(filePath);
       });
+    }
+  });
+
+  context('checks generated source class repository', () => {
+    const promptArray = [
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'Doctor',
+        destinationModel: 'Patient',
+        throughModel: 'Appointment',
+      },
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'DoctorClass',
+        destinationModel: 'PatientClass',
+        throughModel: 'AppointmentClass',
+        registerInclusionResolver: true,
+      },
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'DoctorClassType',
+        destinationModel: 'PatientClassType',
+        throughModel: 'AppointmentClassType',
+        registerInclusionResolver: false,
+      },
+    ];
+
+    const sourceClassnames = ['Doctor', 'DoctorClass', 'DoctorClassType'];
+
+    promptArray.forEach(function (multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+      });
+
+      it(
+        'generates ' +
+          sourceClassnames[i] +
+          ' repository file with different inputs',
+        async () => {
+          const sourceFilePath = path.join(
+            sandbox.path,
+            REPOSITORY_APP_PATH,
+            repositoryFileName[i],
+          );
+
+          assert.file(sourceFilePath);
+          expectFileToMatchSnapshot(sourceFilePath);
+        },
+      );
     }
   });
 });

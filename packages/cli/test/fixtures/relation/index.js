@@ -159,30 +159,92 @@ const SourceEntries = {
     file: 'doctor.model.ts',
     content: readSourceFile('./models/doctor.model.ts'),
   },
+  DoctorClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'doctor-class.model.ts',
+    content: readSourceFile('./models/doctor-class.model.ts'),
+  },
+  DoctorClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'doctor-class-type.model.ts',
+    content: readSourceFile('./models/doctor-class-type.model.ts'),
+  },
   DoctorRepository: {
     path: REPOSITORY_APP_PATH,
     file: 'doctor.repository.ts',
     content: readSourceFile('./repositories/doctor.repository.ts'),
+  },
+  DoctorClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'doctor-class.repository.ts',
+    content: readSourceFile('./repositories/doctor-class.repository.ts'),
+  },
+  DoctorClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'doctor-class-type.repository.ts',
+    content: readSourceFile('./repositories/doctor-class-type.repository.ts'),
   },
   PatientModel: {
     path: MODEL_APP_PATH,
     file: 'patient.model.ts',
     content: readSourceFile('./models/patient.model.ts'),
   },
+  PatientClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'patient-class.model.ts',
+    content: readSourceFile('./models/patient-class.model.ts'),
+  },
+  PatientClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'patient-class-type.model.ts',
+    content: readSourceFile('./models/patient-class-type.model.ts'),
+  },
   PatientRepository: {
     path: REPOSITORY_APP_PATH,
     file: 'patient.repository.ts',
     content: readSourceFile('./repositories/patient.repository.ts'),
+  },
+  PatientClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'patient-class.repository.ts',
+    content: readSourceFile('./repositories/patient-class.repository.ts'),
+  },
+  PatientClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'patient-class-type.repository.ts',
+    content: readSourceFile('./repositories/patient-class-type.repository.ts'),
   },
   AppointmentModel: {
     path: MODEL_APP_PATH,
     file: 'appointment.model.ts',
     content: readSourceFile('./models/appointment.model.ts'),
   },
+  AppointmentClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'appointment-class.model.ts',
+    content: readSourceFile('./models/appointment-class.model.ts'),
+  },
+  AppointmentClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'appointment-class-type.model.ts',
+    content: readSourceFile('./models/appointment-class-type.model.ts'),
+  },
   AppointmentRepository: {
     path: REPOSITORY_APP_PATH,
     file: 'appointment.repository.ts',
     content: readSourceFile('./repositories/appointment.repository.ts'),
+  },
+  AppointmentClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'appointment-class.repository.ts',
+    content: readSourceFile('./repositories/appointment-class.repository.ts'),
+  },
+  AppointmentClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'appointment-class-type.repository.ts',
+    content: readSourceFile(
+      './repositories/appointment-class-type.repository.ts',
+    ),
   },
   DoctorPatientController: {
     path: CONTROLLER_PATH,
@@ -244,8 +306,14 @@ exports.SANDBOX_FILES = [
   SourceEntries.AddressClassTypeRepository,
   SourceEntries.NoKeyRepository,
   SourceEntries.DoctorRepository,
+  SourceEntries.DoctorClassRepository,
+  SourceEntries.DoctorClassTypeRepository,
   SourceEntries.PatientRepository,
+  SourceEntries.PatientClassRepository,
+  SourceEntries.PatientClassTypeRepository,
   SourceEntries.AppointmentRepository,
+  SourceEntries.AppointmentClassRepository,
+  SourceEntries.AppointmentClassTypeRepository,
 
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
@@ -259,8 +327,14 @@ exports.SANDBOX_FILES = [
   SourceEntries.OrderClassTypeModel,
   SourceEntries.AddressClassTypeModel,
   SourceEntries.DoctorModel,
+  SourceEntries.DoctorClassModel,
+  SourceEntries.DoctorClassTypeModel,
   SourceEntries.PatientModel,
+  SourceEntries.PatientClassModel,
+  SourceEntries.PatientClassTypeModel,
   SourceEntries.AppointmentModel,
+  SourceEntries.AppointmentClassModel,
+  SourceEntries.AppointmentClassTypeModel,
   SourceEntries.DoctorPatientController,
 ];
 
