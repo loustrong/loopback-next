@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, FilterBuilder, Inclusion, Where} from '@loopback/filter';
+import {Filter, Inclusion} from '@loopback/filter';
 import debugFactory from 'debug';
-import _ from 'lodash';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
@@ -108,21 +107,18 @@ export function createHasManyThroughInclusionResolver<
         // get target ids from the through entities by foreign key
         const targetIds = entityList.map(entity => entity[throughKeyTo]);
 
-        // create where filter to find the target entities by their ids
-        const where = ({[targetKey]: {inq: targetIds}} as unknown) as Where<
-          Target
-        >;
-
-        let filter: Filter<Target>;
-        // honour scope for the target entities
-        if (inclusion.scope && !_.isEmpty(inclusion.scope)) {
-          // combine where clause to scope filter
-          filter = new FilterBuilder(inclusion.scope).impose({where})
-            .filter as Filter<Target>;
-        } else {
-          filter = {where};
-        }
-        const targetEntityList = await targetRepo.find(filter);
+        // the explicit types and casts are needed
+        const targetEntityList = await findByForeignKeys<
+          Target,
+          TargetRelations,
+          StringKeyOf<Target>
+        >(
+          targetRepo,
+          targetKey,
+          (targetIds as unknown) as [],
+          inclusion.scope as Filter<Target>,
+          options,
+        );
         result.push(targetEntityList);
       } else {
         // no entities found
