@@ -26,8 +26,11 @@ const debug = debugFactory(
  * It doesn't register it for the source repository.
  *
  *
- * @param meta - resolved metadata of the hasManyThrough relation
- * @param getTargetRepo - target repository i.e where related instances are
+ * @param meta - metadata of the hasManyThrough relation
+ * @param getThroughRepo - through repository getter i.e. where through
+ * instances are
+ * @param getTargetRepo - target repository getter i.e where target instances
+ * are
  */
 export function createHasManyThroughInclusionResolver<
   Through extends Entity,
